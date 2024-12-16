@@ -53,6 +53,11 @@ int main (int argc, char** argv){
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
+    if(rank == 0){
+        printf("Arquivo de entrada '%s' lido:\n", filename);
+        P_print_to_screen(graph, size);
+    }
+
     if(size != N){
         if(rank == 0)
             fprintf(stderr, "O numero de processos deve ser %d.\n", N);
@@ -61,6 +66,10 @@ int main (int argc, char** argv){
     }    
 
     int* dist = init_dist(graph, rank);
+    
+    if(rank == 0)
+        puts("Vetores de distancia calculados:");
+    
     do_routing(rank, graph, dist);
     P_print_vector_to_screen(dist, rank, TRUE);
 
